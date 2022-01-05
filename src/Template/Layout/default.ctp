@@ -38,7 +38,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
+                <?php if($loggedIn):?>
                 <h1><a href=""><?= $this->fetch('title') ?></a></h1>
+                <?php else: ?>
+                    <h1><?= $this->Html->link('Login',['controller'=>'users',
+                                'action'=> 'login']
+                        ); ?></a></h1>
+                <?php endif;?>
             </li>
         </ul>
         <div class="top-bar-section">
