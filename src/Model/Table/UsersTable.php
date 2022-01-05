@@ -70,8 +70,9 @@ class UsersTable extends Table
             ]
         );
         $validator
-            ->scalar('Phonenumber')
+            ->integer('Phonenumber','Phone number should only have numbers.')
             ->maxLength('Phonenumber', 10)
+            ->minLength('Phonenumber',10,'Phone number should have 10 digits.')
             ->notEmptyString('Phonenumber','Please enter phone number.');
 
         $validator
