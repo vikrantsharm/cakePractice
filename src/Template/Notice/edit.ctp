@@ -17,7 +17,7 @@
         <legend><?= __('Edit Notice') ?></legend>
         <?php
             echo $this->Form->control('Subject');
-            echo $this->Form->control('Content');
+            echo $this->Form->control('Content',['type'=>'textarea']);
 //            echo $this->Form->control('Author');
 //            echo $this->Form->control('Creation_Date', ['empty' => true]);
 //            echo $this->Form->control('Update_Date', ['empty' => true]);
