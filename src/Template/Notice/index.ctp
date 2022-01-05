@@ -34,7 +34,7 @@
             <tr>
                 <td><?= $this->Number->format($notice->id) ?></td>
                 <td><?= h($notice->Subject) ?></td>
-                <td><?= h($notice->Content) ?></td>
+                <td><?= h(substr($notice->Content,0,30)) ?><?= h(strlen($notice->Content) > 30 ? '...' : '')?></td>
                 <td><?= $this->Number->format($notice->Author) ?></td>
                 <td><?= h($notice->Creation_Date) ?></td>
                 <td><?= h($notice->Update_Date) ?></td>
