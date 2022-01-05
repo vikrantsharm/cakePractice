@@ -50,12 +50,12 @@ class NoticeTable extends Table
         $validator
             ->scalar('Subject')
             ->maxLength('Subject', 255)
-            ->allowEmptyString('Subject');
+            ->notEmptyString('Subject','Subject can not be empty.');
 
         $validator
             ->scalar('Content')
             ->maxLength('Content', 3000)
-            ->allowEmptyString('Content');
+            ->notEmptyString('Content','Content can not be empty.');
 
         $validator
             ->integer('Author')
