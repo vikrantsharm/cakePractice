@@ -8,6 +8,11 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Notice'), ['action' => 'add']) ?></li>
+        <?php if($Type=='マネージャー'): ?>
+        <li><?= $this->Html->link('User Management',['controller'=>'users',
+                    'action'=> 'index']
+            ); ?></a></li>
+        <?php endif;?>
     </ul>
 </nav>
 <div class="notice index large-9 medium-8 columns content">
@@ -21,7 +26,6 @@
                 <th scope="col"><?= $this->Paginator->sort('Author') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Creation_Date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Update_Date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('IsDeleted') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -34,10 +38,9 @@
                 <td><?= $this->Number->format($notice->Author) ?></td>
                 <td><?= h($notice->Creation_Date) ?></td>
                 <td><?= h($notice->Update_Date) ?></td>
-                <td><?= h($notice->IsDeleted) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $notice->id]) ?>
-                    <?php if($userId==$notice->Author):?>
+                    <?php if($userId==$notice->Author || $Type=='マネージャー'):?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $notice->id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $notice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notice->Subject)]) ?>
                     <?php endif;?>

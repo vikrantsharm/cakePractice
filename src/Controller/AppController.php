@@ -71,6 +71,7 @@ class AppController extends Controller
        if($this->request->session()->read('Auth.User')){
            $this->set('loggedIn',true);
            $this->set('userId', $this->Auth->user('Id'));
+           $this->set('Type', $this->Auth->user('Type'));
        } else {
            $this->set('loggedIn',false);
        }

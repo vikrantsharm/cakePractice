@@ -8,6 +8,13 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Notice List'), ['controller'=>'notice',
+                'action'=> 'index']) ?></li>
+        <?php if($Type=='マネージャー'): ?>
+            <li><?= $this->Html->link('User Management',['controller'=>'users',
+                        'action'=> 'index']
+                ); ?></a></li>
+        <?php endif;?>
     </ul>
 </nav>
 <div class="users index large-9 medium-8 columns content">

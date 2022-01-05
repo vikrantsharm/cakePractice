@@ -20,9 +20,15 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users);
+        if($this->Auth->user('Type')=='マネージャー') {
+            $users = $this->paginate($this->Users);
 
-        $this->set(compact('users'));
+            $this->set(compact('users'));
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+            return $this->redirect(['controller' => 'Notice']);
+        }
     }
 
     /**
@@ -34,11 +40,17 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
+        if($this->Auth->user('Type')=='マネージャー') {
+            $user = $this->Users->get($id, [
+                'contain' => [],
+            ]);
 
-        $this->set('user', $user);
+            $this->set('user', $user);
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+            return $this->redirect(['controller' => 'Notice']);
+        }
     }
 
     /**
@@ -48,17 +60,23 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+        if($this->Auth->user('Type')=='マネージャー')  {
+            $user = $this->Users->newEntity();
+            if ($this->request->is('post')) {
+                $user = $this->Users->patchEntity($user, $this->request->getData());
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->set(compact('user'));
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+            return $this->redirect(['controller' => 'Notice']);
         }
-        $this->set(compact('user'));
     }
 
     /**
@@ -70,20 +88,45 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            $user->Update_Date=FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss','Asia/Tokyo');
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The profile has bee updated.'));
+        if($this->Auth->user('Type')=='マネージャー') {
+            $user = $this->Users->get($id, [
+                'contain' => [],
+            ]);
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $user = $this->Users->patchEntity($user, $this->request->getData());
+                $user->Update_Date = FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss', 'Asia/Tokyo');
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('The user has bee updated.'));
 
-                return $this->redirect(['controller' => 'Notice']);
+                    return $this->redirect(['controller' => 'users']);
+                }
+                $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->set(compact('user'));
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+            return $this->redirect(['controller' => 'Notice']);
         }
-        $this->set(compact('user'));
+    }
+    public function profile($id = null)
+    {
+
+            $user = $this->Users->get($id, [
+                'contain' => [],
+            ]);
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $user = $this->Users->patchEntity($user, $this->request->getData());
+                $user->Update_Date = FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss', 'Asia/Tokyo');
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('The profile has been updated.'));
+
+                    return $this->redirect(['controller' => 'Notice']);
+                }
+                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            }
+            $this->set(compact('user'));
+
     }
 
     /**
@@ -95,15 +138,21 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
-        }
+        if($this->Auth->user('Type')=='マネージャー') {
+            $this->request->allowMethod(['post', 'delete']);
+            $user = $this->Users->get($id);
+            if ($this->Users->delete($user)) {
+                $this->Flash->success(__('The user has been deleted.'));
+            } else {
+                $this->Flash->error(__('The user could not be deleted. Please, try again.'));
+            }
 
-        return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'index']);
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+            return $this->redirect(['controller' => 'Notice']);
+        }
     }
 
     //Login
