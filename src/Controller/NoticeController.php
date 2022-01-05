@@ -74,20 +74,30 @@ class NoticeController extends AppController
      */
     public function edit($id = null)
     {
+        if($this->Auth->user('Id')==$this->Notice->get($id)->Author || $this->Auth->user('Type')=='マネージャー') {
         $notice = $this->Notice->get($id, [
             'contain' => [],
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $notice = $this->Notice->patchEntity($notice, $this->request->getData());
-            $notice->Update_Date=FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss','Asia/Tokyo');
-            if ($this->Notice->save($notice)) {
-                $this->Flash->success(__('The notice has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The notice could not be saved. Please, try again.'));
+               $notice->Update_Date = FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss', 'Asia/Tokyo');
+               if ($this->Notice->save($notice)) {
+                   $this->Flash->success(__('The notice has been saved.'));
+
+                   return $this->redirect(['action' => 'index']);
+               }
+               $this->Flash->error(__('The notice could not be saved. Please, try again.'));
+
+
+           }
+            $this->set(compact('notice'));
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+            return $this->redirect(['action' => 'index']);
         }
-        $this->set(compact('notice'));
     }
 
     /**
@@ -99,15 +109,20 @@ class NoticeController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $notice = $this->Notice->get($id);
-        $notice->IsDeleted=true;
-        if ($this->Notice->save($notice)) {
-            $this->Flash->success(__('The notice has been deleted.'));
-        } else {
-            $this->Flash->error(__('The notice could not be deleted. Please, try again.'));
-        }
+        if($this->Auth->user('Id')==$this->Notice->get($id)->Author||$this->Auth->user('Type')=='マネージャー')  {
+            $this->request->allowMethod(['post', 'delete']);
+            $notice = $this->Notice->get($id);
+            $notice->IsDeleted = true;
+            if ($this->Notice->save($notice)) {
+                $this->Flash->success(__('The notice has been deleted.'));
+            } else {
+                $this->Flash->error(__('The notice could not be deleted. Please, try again.'));
+            }
 
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+        }
         return $this->redirect(['action' => 'index']);
     }
 }
