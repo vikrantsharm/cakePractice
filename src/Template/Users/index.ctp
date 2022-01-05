@@ -25,7 +25,6 @@
                 <th scope="col"><?= $this->Paginator->sort('Id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Username') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('Password') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Phonenumber') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Type') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Creation_Date') ?></th>
@@ -39,13 +38,11 @@
                 <td><?= $this->Number->format($user->Id) ?></td>
                 <td><?= h($user->Username) ?></td>
                 <td><?= h($user->Name) ?></td>
-                <td><?= h($user->Password) ?></td>
                 <td><?= h($user->Phonenumber) ?></td>
                 <td><?= h($user->Type) ?></td>
                 <td><?= h($user->Creation_Date) ?></td>
                 <td><?= h($user->Update_Date) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->Id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->Id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->Id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->Id)]) ?>
                 </td>
