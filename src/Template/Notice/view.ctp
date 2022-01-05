@@ -13,15 +13,10 @@
 </nav>
 <div class="notice view large-9 medium-8 columns content">
     <h3><?= h($notice->Subject) ?></h3>
+    <br/>
+    <h4><?= h($notice->Content) ?></h4>
+    <br/>
     <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Subject') ?></th>
-            <td><?= h($notice->Subject) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Content') ?></th>
-            <td><?= h($notice->Content) ?></td>
-        </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($notice->id) ?></td>
@@ -37,10 +32,6 @@
         <tr>
             <th scope="row"><?= __('Update Date') ?></th>
             <td><?= h($notice->Update_Date) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('IsDeleted') ?></th>
-            <td><?= $notice->IsDeleted ? __('Yes') : __('No'); ?></td>
         </tr>
     </table>
 </div>
