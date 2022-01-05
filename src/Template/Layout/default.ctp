@@ -44,7 +44,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <div class="top-bar-section">
             <ul class="right">
                 <?php if($loggedIn):?>
-                    <li><?= $this->Html->link(__('Profile'), ['controller'=>'Users','action' => 'edit',$userId]) ?> </li>
+                    <li><?= $this->Html->link(__('Profile'), ['controller'=>'Users','action' => 'profile',$userId]) ?> </li>
                     <li><?= $this->Html->link('Logout',['controller'=>'users',
                            'action'=> 'logout']
                     ); ?></a></li>
@@ -53,6 +53,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                             'action'=> 'register']
                     ); ?></a></li>
                 <?php endif;?>
+
 <!--                <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>-->
             </ul>
         </div>

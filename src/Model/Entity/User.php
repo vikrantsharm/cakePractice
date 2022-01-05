@@ -36,6 +36,7 @@ class User extends Entity
         'Creation_Date' => true,
         'Update_Date' => true,
     ];
+
     protected function _setPassword($password){
         return (new DefaultPasswordHasher)->hash($password);
     }

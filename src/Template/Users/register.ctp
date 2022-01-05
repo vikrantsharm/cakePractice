@@ -11,6 +11,7 @@ use Cake\I18n\FrozenTime;
         <?=  $this->Form->input('Name'); ?>
         <?=  $this->Form->input('Username'); ?>
         <?=  $this->Form->input('Password',array('type'=>'password')); ?>
+        <?=  $this->Form->input('Confirm_Password',array('type'=>'password')); ?>
         <?=  $this->Form->input('Phonenumber'); ?>
         <?=  $this->Form->submit('Register',array('class'=>'button')); ?>
 

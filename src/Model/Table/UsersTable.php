@@ -50,23 +50,29 @@ class UsersTable extends Table
         $validator
             ->scalar('Username')
             ->maxLength('Username', 75)
-            ->allowEmptyString('Username')
-            ->add('Username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('Username','Please enter the username')
+            ->add('Username', 'email', ['rule' => 'email','message' =>'Please enter a valid email.'])
+            ->add('Username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table','message' =>'Provided Username already exists.']);
 
         $validator
             ->scalar('Name')
             ->maxLength('Name', 45)
-            ->allowEmptyString('Name');
+            ->notEmptyString('Name','Please enter name');
 
         $validator
             ->scalar('Password')
             ->maxLength('Password', 45)
-            ->allowEmptyString('Password');
-
+            ->minLength('Password',3,'Password must be at least 3 characters.');
+        $validator->add('Confirm_Password',
+            'compareWith', [
+                'rule' => ['compareWith', 'Password'],
+                'message' => 'Passwords not equal.'
+            ]
+        );
         $validator
             ->scalar('Phonenumber')
             ->maxLength('Phonenumber', 10)
-            ->allowEmptyString('Phonenumber');
+            ->notEmptyString('Phonenumber','Please enter phone number.');
 
         $validator
             ->scalar('Type')
