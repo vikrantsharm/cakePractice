@@ -3,10 +3,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Notice[]|\Cake\Collection\CollectionInterface $notice
  */
+
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
+        <li class="heading"><?= __('Actions'); ?></li>
         <li><?= $this->Html->link(__('New Notice'), ['action' => 'add']) ?></li>
         <?php if($Type=='マネージャー'): ?>
         <li><?= $this->Html->link('User Management',['controller'=>'users',
@@ -23,19 +24,22 @@
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Subject') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Content') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('Author') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('Created by') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Creation_Date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Update_Date') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
+
         </thead>
         <tbody>
+
             <?php foreach ($notice as $notice): ?>
+
             <tr>
                 <td><?= $this->Number->format($notice->id) ?></td>
                 <td><?= h($notice->Subject) ?></td>
                 <td><?= h(substr($notice->Content,0,30)) ?><?= h(strlen($notice->Content) > 30 ? '...' : '')?></td>
-                <td><?= $this->Number->format($notice->Author) ?></td>
+                <td><?= h($notice->user['Name']) ?></td>
                 <td><?= h($notice->Creation_Date) ?></td>
                 <td><?= h($notice->Update_Date) ?></td>
                 <td class="actions">

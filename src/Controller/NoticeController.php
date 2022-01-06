@@ -20,7 +20,9 @@ class NoticeController extends AppController
      */
     public function index()
     {
-        $notice = $this->paginate($this->Notice->find()->where(['IsDeleted !='=>true]));
+        $notice = $this->paginate($this->Notice->find('all')->select(['id','Subject','Content','Author','Creation_Date','Update_Date','Users.Name'])->contain('Users'
+        )->where(['IsDeleted !='=>true]));
+
 
         $this->set(compact('notice'));
     }
@@ -35,7 +37,7 @@ class NoticeController extends AppController
     public function view($id = null)
     {
         $notice = $this->Notice->get($id, [
-            'contain' => [],
+            'contain' => 'Users',
         ]);
 
         $this->set('notice', $notice);

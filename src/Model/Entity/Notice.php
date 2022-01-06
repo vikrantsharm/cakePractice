@@ -32,5 +32,6 @@ class Notice extends Entity
         'Creation_Date' => true,
         'Update_Date' => true,
         'IsDeleted' => true,
+        'Name'=>true,
     ];
 }

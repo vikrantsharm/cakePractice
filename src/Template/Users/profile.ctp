@@ -18,7 +18,7 @@
 <div class="users form large-9 medium-8 columns content">
     <?= $this->Form->create($user) ?>
     <fieldset>
-        <legend><?= __('Edit User') ?></legend>
+        <legend><?= __('Profile') ?></legend>
         <?php
         echo $this->Form->control('Username');
         echo $this->Form->control('Name');

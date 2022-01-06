@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Author') ?></th>
-            <td><?= $this->Number->format($notice->Author) ?></td>
+            <td><?= h($notice->user['Name']) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Creation Date') ?></th>

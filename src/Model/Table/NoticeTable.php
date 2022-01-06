@@ -33,6 +33,13 @@ class NoticeTable extends Table
         $this->setTable('notice');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+        $this->hasOne('Users', [
+            'className' => 'Users',
+            'foreignKey' => false,
+//            'type' => 'inner',
+            'conditions' => 'Users.Id=Notice.Author'
+        ]);
+//        $this->belongsTo('Users');
     }
 
     /**
