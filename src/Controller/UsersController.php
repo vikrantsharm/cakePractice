@@ -2,7 +2,10 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Auth\DefaultPasswordHasher;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
+use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\FrozenTime;
 /**
  * Users Controller
@@ -21,6 +24,7 @@ class UsersController extends AppController
     public function index()
     {
         if($this->Auth->user('Type')=='マネージャー') {
+
             $users = $this->paginate($this->Users);
 
             $this->set(compact('users'));
@@ -89,16 +93,22 @@ class UsersController extends AppController
     public function edit($id = null)
     {
         if($this->Auth->user('Type')=='マネージャー') {
-            $user = $this->Users->get($id, [
-                'contain' => [],
-            ]);
+
+               $user = $this->Users->get($id, [
+                   'contain' => [],
+               ]);
+
+
             if ($this->request->is(['patch', 'post', 'put'])) {
                 $user = $this->Users->patchEntity($user, $this->request->getData());
                 $user->Update_Date = FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss', 'Asia/Tokyo');
                 if ($this->Users->save($user)) {
+                    if($user->Id==$this->Auth->user('Id')){
+                        $this->Auth->setUser($user);
+                    }
                     $this->Flash->success(__('The user has bee updated.'));
 
-                    return $this->redirect(['controller' => 'users']);
+                    return $this->redirect(['controller' => 'Notice']);
                 }
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
@@ -127,6 +137,28 @@ class UsersController extends AppController
             }
             $this->set(compact('user'));
 
+    }
+    public function changePassword($id=null){
+        $user = $this->Users->get($id, [
+            'contain' => [],
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data=$this->request->getData();
+            if($data['NewPassword']==$data['Confirm_NewPassword']) {
+                if ((new DefaultPasswordHasher)->check($data['Current_Password'], $user->Password)) {
+                    $user->Password = $data['NewPassword'];
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('The password has been updated successfully.'));
+                    }
+                } else {
+                    $this->Flash->error(__('The Password you entered does not match your current Password. Please Try again.'));
+                }
+            }
+             else {
+                $this->Flash->error(__('The confirm password and new password field does not match.'));
+            }
+        }
+        $this->set(compact('user'));
     }
 
     /**

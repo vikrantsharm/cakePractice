@@ -62,10 +62,21 @@ class UsersTable extends Table
         $validator
             ->scalar('Password')
             ->maxLength('Password', 45)
-            ->minLength('Password',3,'Password must be at least 3 characters.');
+            ->minLength('Password',8,'Password must be at least 8 characters.');
         $validator->add('Confirm_Password',
             'compareWith', [
                 'rule' => ['compareWith', 'Password'],
+                'message' => 'Passwords not equal.'
+            ]
+        );
+        $validator->scalar('Current_Password')
+            ->notEmptyString('Current_Password');
+        $validator->scalar('NewPassword')
+            ->notEmptyString('NewPassword')
+            ->minLength('NewPassword',8,'Password must be at least 8 characters.');
+        $validator->add('Confirm_NewPassword',
+            'compareWith', [
+                'rule' => ['compareWith', 'NewPassword'],
                 'message' => 'Passwords not equal.'
             ]
         );

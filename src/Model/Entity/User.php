@@ -35,6 +35,9 @@ class User extends Entity
         'Type' => true,
         'Creation_Date' => true,
         'Update_Date' => true,
+        'Confirm_NewPassword'=>true,
+        'NewPassword'=>true,
+        'Current_Password'=>true,
     ];
 
     protected function _setPassword($password){
