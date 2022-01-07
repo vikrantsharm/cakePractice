@@ -71,6 +71,9 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             if ($this->request->is('post')) {
                 $user = $this->Users->patchEntity($user, $this->request->getData());
+                $user->Creation_Date = FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss', 'Asia/Tokyo');
+                $user->Update_Date = FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss', 'Asia/Tokyo');
+                $user->Password='Zenken';
                 if ($this->Users->save($user)) {
                     $this->Flash->success(__('The user has been saved.'));
 
