@@ -8,7 +8,7 @@ use Cake\Event\Event;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
-
+use Cake\Mailer\Email;
 /**
  * Users Controller
  *
@@ -155,6 +155,7 @@ class UsersController extends AppController
                     $user->Password = $data['NewPassword'];
                     if ($this->Users->save($user)) {
                         $this->Flash->success(__('The password has been updated successfully.'));
+                        return $this->redirect(['controller' => 'Notice']);
                     }
                 } else {
                     $this->Flash->error(__('The Password you entered does not match your current Password. Please Try again.'));
@@ -197,7 +198,40 @@ class UsersController extends AppController
             return $this->redirect(['controller' => 'Notice']);
         }
     }
+    public function reset($id = null){
+        if($this->Auth->user('Type')=='マネージャー') {
 
+            $user = $this->Users->get($id, [
+                'contain' => [],
+            ]);
+
+            $this->request->allowMethod(['post', 'reset']);
+
+                $user = $this->Users->patchEntity($user, $this->request->getData());
+                $user->Update_Date = FrozenTime::parse('now')->i18nFormat('yyyy-MM-dd HH:mm:ss', 'Asia/Tokyo');
+                $user->Password='Zenken';
+                if ($this->Users->save($user)) {
+                    if($user->Id==$this->Auth->user('Id')){
+                        $this->Auth->setUser($user);
+                    }
+//                    $email = new Email('default');
+//                    $email->from('s.vikrant@zenken.co.jp')
+//                        ->to($user->Username)
+//                        ->subject('Your Password for cakepractice is resetted.')
+//                        ->send('Your new Password is : Zenken');
+                    $this->Flash->success(__('The Password has been reset.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The Password could not be reset. Please, try again.'));
+
+            $this->set(compact('user'));
+        } else {
+            $this->Flash->error('You are not authorized.');
+
+            return $this->redirect(['controller' => 'Notice']);
+        }
+    }
     //Login
     public function login(){
         if($this->request->is('post')){

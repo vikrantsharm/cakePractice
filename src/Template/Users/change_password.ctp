@@ -20,10 +20,10 @@
     <fieldset>
         <legend><?= __('Edit Password') ?></legend>
         <?php
-        echo $this->Form->control('Current_Password');
-        echo $this->Form->control('NewPassword');
+        echo $this->Form->control('Current_Password',array('type'=>'password'));
+        echo $this->Form->control('NewPassword',array('type'=>'password'));
 
-        echo $this->Form->control('Confirm_NewPassword');
+        echo $this->Form->control('Confirm_NewPassword',array('type'=>'password'));
 
         ?>
     </fieldset>

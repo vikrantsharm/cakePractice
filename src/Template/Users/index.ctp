@@ -45,6 +45,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->Id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->Id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->Id)]) ?>
+                    <?= $this->Form->postLink(__('Reset Password'), ['action' => 'reset', $user->Id], ['confirm' => __('Are you sure you want to reset password for user # {0}?', $user->Id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
