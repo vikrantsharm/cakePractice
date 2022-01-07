@@ -33,12 +33,12 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('Id');
         $this->setPrimaryKey('Id');
-//        $this->hasMany('Notice', [
-//            'className' => 'Notice',
-//            'foreignKey' => 'Author'
-////            'type' => 'inner',
-////            'conditions' => 'Users.Id=Notice.Author'
-//        ]);
+        $this->hasMany('Notice', [
+            'className' => 'Notice',
+            'foreignKey' => 'Author'
+//            'type' => 'inner',
+//            'conditions' => 'Users.Id=Notice.Author'
+        ]);
     }
 
     /**
