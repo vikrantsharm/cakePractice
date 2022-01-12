@@ -66,14 +66,14 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
     }
-    public function beforeRender(Event $event)
-    {
-       if($this->request->session()->read('Auth.User')){
-           $this->set('loggedIn',true);
-           $this->set('userId', $this->Auth->user('Id'));
-           $this->set('Type', $this->Auth->user('Type'));
-       } else {
-           $this->set('loggedIn',false);
-       }
-    }
+//    public function beforeFilter(Event $event)
+//    {
+//       if($this->request->session()->read('Auth.User')){
+//           $this->set('loggedIn',true);
+//           $this->set('userId', $this->Auth->user('Id'));
+//           $this->set('Type', $this->Auth->user('Type'));
+//       } else {
+//           $this->set('loggedIn',false);
+//       }
+//    }
 }
