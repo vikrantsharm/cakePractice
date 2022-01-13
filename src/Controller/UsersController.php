@@ -31,17 +31,17 @@ class UsersController extends AppController
 
     public function index()
     {
-        if($this->Auth->user('Type')=='マネージャー') {
+//        if($this->Auth->user('Type')=='マネージャー') {
 
-            $users = $this->paginate($this->Users);
+            $users = $this->paginate($this->Users,['limit' => 5]);
 
             $this->set(compact('users'));
-        } else {
-//            $this->Flash->error('You are not authorized.');
-//
-//            return $this->redirect(['controller' => 'Notice']);
-            throw new ForbiddenException();
-        }
+//        } else {
+////            $this->Flash->error('You are not authorized.');
+////
+////            return $this->redirect(['controller' => 'Notice']);
+//            throw new ForbiddenException();
+//        }
     }
 
     /**
@@ -53,18 +53,18 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        if($this->Auth->user('Type')=='マネージャー') {
+//        if($this->Auth->user('Type')=='マネージャー') {
             $user = $this->Users->get($id, [
                 'contain' => [],
             ]);
 
             $this->set('user', $user);
-        } else {
-//            $this->Flash->error('You are not authorized.');
-//
-//            return $this->redirect(['controller' => 'Notice']);
-            throw new ForbiddenException();
-        }
+//        } else {
+////            $this->Flash->error('You are not authorized.');
+////
+////            return $this->redirect(['controller' => 'Notice']);
+//            throw new ForbiddenException();
+//        }
     }
 
     /**
@@ -74,7 +74,7 @@ class UsersController extends AppController
      */
     public function add()
     {
-        if($this->Auth->user('Type')=='マネージャー')  {
+//        if($this->Auth->user('Type')=='マネージャー')  {
             $user = $this->Users->newEntity();
             if ($this->request->is('post')) {
                 $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -89,11 +89,11 @@ class UsersController extends AppController
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
             $this->set(compact('user'));
-        } else {
-//            $this->Flash->error('You are not authorized.');
-            throw new ForbiddenException();
-
-        }
+//        } else {
+////            $this->Flash->error('You are not authorized.');
+//            throw new ForbiddenException();
+//
+//        }
     }
 
     /**
@@ -105,7 +105,7 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        if($this->Auth->user('Type')=='マネージャー') {
+//        if($this->Auth->user('Type')=='マネージャー') {
 
                $user = $this->Users->get($id, [
                    'contain' => [],
@@ -126,12 +126,12 @@ class UsersController extends AppController
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
             $this->set(compact('user'));
-        } else {
-//            $this->Flash->error('You are not authorized.');
-//
-//            return $this->redirect(['controller' => 'Notice']);
-            throw new ForbiddenException();
-        }
+//        } else {
+////            $this->Flash->error('You are not authorized.');
+////
+////            return $this->redirect(['controller' => 'Notice']);
+//            throw new ForbiddenException();
+//        }
     }
     public function profile($id = null)
     {
@@ -188,7 +188,7 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-        if($this->Auth->user('Type')=='マネージャー') {
+//        if($this->Auth->user('Type')=='マネージャー') {
             $this->request->allowMethod(['post', 'delete']);
             $Notice= TableRegistry::get('Notice');
             $user = $this->Users->get($id);
@@ -203,15 +203,15 @@ class UsersController extends AppController
                 $this->Flash->error(__('The user could not be deleted. Please, try again.'));
             }
             return $this->redirect(['action' => 'index']);
-        } else {
-//            $this->Flash->error('You are not authorized.');
-//
-//            return $this->redirect(['controller' => 'Notice']);
-            throw new ForbiddenException();
-        }
+//        } else {
+////            $this->Flash->error('You are not authorized.');
+////
+////            return $this->redirect(['controller' => 'Notice']);
+//            throw new ForbiddenException();
+//        }
     }
     public function reset($id = null){
-        if($this->Auth->user('Type')=='マネージャー') {
+//        if($this->Auth->user('Type')=='マネージャー') {
 
             $user = $this->Users->get($id, [
                 'contain' => [],
@@ -238,12 +238,12 @@ class UsersController extends AppController
                 $this->Flash->error(__('The Password could not be reset. Please, try again.'));
 
             $this->set(compact('user'));
-        } else {
-//            $this->Flash->error('You are not authorized.');
-//
-//            return $this->redirect(['controller' => 'Notice']);
-            throw new ForbiddenException();
-        }
+//        } else {
+////            $this->Flash->error('You are not authorized.');
+////
+////            return $this->redirect(['controller' => 'Notice']);
+//            throw new ForbiddenException();
+//        }
     }
     //Login
     public function login(){
@@ -281,7 +281,10 @@ class UsersController extends AppController
     }
     public function beforeFilter(Event $event)
     {
-        $this->Auth->allow(['register']);
+        $this->Auth->allow(['logout','profile','changePassword']);
+        if($this->request->getParam('action') === 'login' && $this->request->session()->read('Auth.User')) {
+            $this->redirect(array('controller' => 'notice'));
+        }
        // return parent::beforeFilter($event); // TODO: Change the autogenerated stub
         if($this->request->session()->read('Auth.User')){
             $this->set('loggedIn',true);

@@ -41,7 +41,10 @@ class NoticeTable extends Table
         ]);
 //        $this->belongsTo('Users');
     }
-
+    public function isOwnedBy($noticeId, $userId)
+    {
+        return $this->exists(['id' => $noticeId, 'Author' => $userId]);
+    }
     /**
      * Default validation rules.
      *

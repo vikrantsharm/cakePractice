@@ -54,11 +54,18 @@ class AppController extends Controller
                         ]
                     ]
                 ],
+                'authorize' => ['Controller'], // Added this line
+                'loginRedirect' => [
+                    'controller' => 'Notice',
+                    'action' => 'index'
+                ],
                 'loginAction'=>[
                     'controller'=>'Users',
                     'action'=>'login'
-                ]
+                ],
+            'unauthorizedRedirect' => false
         ]);
+        $this->Auth->allow(['register']);
 
         /*
          * Enable the following component for recommended CakePHP security settings.
@@ -76,4 +83,16 @@ class AppController extends Controller
 //           $this->set('loggedIn',false);
 //       }
 //    }
+    public function isAuthorized($user)
+    {
+        $this->Auth->allow(['register']);
+        $this->Auth->allow(['logout']);
+        // Admin can access every action
+        if (isset($user['Type']) && $user['Type'] === 'マネージャー') {
+            return true;
+        }
+
+        // Default deny
+        return false;
+    }
 }
